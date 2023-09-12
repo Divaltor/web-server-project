@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+    restart: on-failure
+    depends_on:
+      - postgresql
+    command: python manage.py runserver --host 0.0.0.0
+
+  postgresql:
+    image: postgres:15-alpine
+    restart: on-failure
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+
+volumes:
+  postgresql_data:
